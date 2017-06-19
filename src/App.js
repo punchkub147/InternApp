@@ -1,21 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+
+import Router from './router'
+import * as conn from './firebase'
+import ListItem from './components/ListItem'
 
 class App extends Component {
+
+  state = {
+    users: []
+  }
+
+  componentDidMount() {
+    var _self = this
+    conn.getUsers().then(function(result) {
+      _self.setState({
+        users: result
+      })
+    })
+  }
+
   render() {
+    const { users } = this.state
+    
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Spyrocash</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to.
-        </p>
+        <ListItem list={users} getKey="id"/>
       </div>
     );
   }
+
 }
 
 export default App;
